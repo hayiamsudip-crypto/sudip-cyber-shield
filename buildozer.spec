@@ -14,6 +14,7 @@ android.api = 35
 android.minapi = 23
 android.archs = arm64-v8a
 android.accept_sdk_license = True
+p4a.branch = v2024.01.21
 
 [buildozer]
 log_level = 2
