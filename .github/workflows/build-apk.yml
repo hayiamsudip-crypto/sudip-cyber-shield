@@ -8,13 +8,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    timeout-minutes: 90
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Install build dependencies
         run: |
           sudo apt-get update
@@ -25,8 +28,16 @@ jobs:
             cmake libffi-dev libssl-dev
           python -m pip install --upgrade pip
           python -m pip install buildozer==1.5.0 cython==0.29.36
+
+      - name: Show pinned build configuration
+        run: |
+          python --version
+          buildozer --version
+          grep -E '^(android.api|android.ndk|p4a.branch|requirements) *=' buildozer.spec
+
       - name: Build debug APK
         run: buildozer -v android debug
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
